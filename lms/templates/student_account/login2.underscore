@@ -38,7 +38,7 @@
         <div class="login-button3"></div>
     </a>  
     <div id="Login_Normal" class="login-providers" style="text-align: left;visibility: hidden;">
-             
+    
         <p class="sr">
             <% if ( context.providers.length > 0 && !context.currentProvider || context.hasSecondaryProviders ) { %>
                 <%- gettext("Sign in here using your email address and password, or use one of the providers listed below.") %>
