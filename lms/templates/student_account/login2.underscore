@@ -1,3 +1,4 @@
+
 <div class="js-form-feedback" aria-live="assertive" tabindex="-1">
 </div>
 <div class="toggle-form">
@@ -25,15 +26,19 @@
 <% } %>
 
 <form id="login" class="login-form" tabindex="-1" method="POST">
-    <button type="button" class="button-secondary-login login-provider" data-provider-url="/uchileedxlogin/login" style="width: 100%;color: white;background:#e1a752;font-size: 17px;text-align: center;font-weight:bold;border-color:white;">            
-        <span aria-hidden="true"><%- gettext("Account") %> UChile</span>
-    </button>  
-    <div class="login-providers" style="text-align: left;">
-        <div class="section-title lines">
-            <h3>
-                <span class="text"><%- gettext("or sign in with") %></span>
-            </h3>
-        </div>       
+    <a href="/uchileedxlogin/login">
+        <div class="login-button2"></div>
+    </a>
+    <div class="section-title lines">
+        <h3>
+            <span class="text">o</span>
+        </h3>
+    </div>
+    <a href="#" onclick="return loginCorreo();">
+        <div class="login-button3"></div>
+    </a>
+    <div id="Login_Normal" class="login-providers" style="text-align: left;visibility: hidden;">
+    
         <p class="sr">
             <% if ( context.providers.length > 0 && !context.currentProvider || context.hasSecondaryProviders ) { %>
                 <%- gettext("Sign in here using your email address and password, or use one of the providers listed below.") %>
@@ -49,4 +54,13 @@
     </div>
     
 </form>
-
+<script>
+    function loginCorreo() {
+      var x = document.getElementById("Login_Normal");
+      if (x.style.visibility === "hidden") {
+        x.style.visibility = "visible";
+      } else {
+        x.style.visibility = "hidden";
+      }
+    }
+</script>

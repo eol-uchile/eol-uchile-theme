@@ -28,7 +28,6 @@
     <script type="text/javascript" src="${static.url('js/student_account/tos_modal.js')}"></script>
     % endif
 </%block>
-
 <%block name="header_extras">
     % for template_name in ["account", "access", "form_field", "register", "institution_login", "institution_register", "password_reset", "hinted_login"]:
         <script type="text/template" id="${template_name}-tpl">
@@ -40,7 +39,22 @@
     </script>
 
 </%block>
+
 <div class="section-bkg-wrapper">
+<style>
+    .login-button2{
+        background:url("${static.url('eol-uchile-theme/images/buttons/login_button_blue.jpg')}");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 70px;
+    }
+    .login-button3{
+        background:url("${static.url('eol-uchile-theme/images/buttons/login_button_eol_red.jpg')}");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 70px;
+    }
+</style>
     <main id="main" aria-label="Content" tabindex="-1">
         <div id="content-container" class="login-register-content">
             % if enable_enterprise_sidebar:
