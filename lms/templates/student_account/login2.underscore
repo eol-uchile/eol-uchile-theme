@@ -25,8 +25,8 @@
     <h2><%- gettext("Sign In") %></h2>
 <% } %>
 
-<form id="login" class="login-form" tabindex="-1" method="POST">  
-    <a href="/uchileedxlogin/login">       
+<form id="login" class="login-form" tabindex="-1" method="POST">
+    <a href="/uchileedxlogin/login">
         <div class="login-button2"></div>
     </a>
     <div class="section-title lines">
@@ -34,9 +34,9 @@
             <span class="text">o</span>
         </h3>
     </div>
-    <a href="#" onclick="return loginCorreo();">       
+    <a href="#" onclick="return loginCorreo();">
         <div class="login-button3"></div>
-    </a>  
+    </a>
     <div id="Login_Normal" class="login-providers" style="text-align: left;visibility: hidden;">
     
         <p class="sr">
@@ -64,5 +64,3 @@
       }
     }
 </script>
-
-
