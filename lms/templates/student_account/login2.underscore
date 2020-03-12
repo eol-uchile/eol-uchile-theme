@@ -34,11 +34,10 @@
             <span class="text">o</span>
         </h3>
     </div>
-    <a href="#" onclick="return loginCorreo();">
+    <a href="#Login_Normal" onclick="return loginCorreo();">
         <div class="login-button3"></div>
     </a>
-    <div id="Login_Normal" class="login-providers" style="text-align: left;visibility: hidden;">
-    
+    <div id="Login_Normal" class="login-providers" style="text-align: left;visibility: hidden;">             
         <p class="sr">
             <% if ( context.providers.length > 0 && !context.currentProvider || context.hasSecondaryProviders ) { %>
                 <%- gettext("Sign in here using your email address and password, or use one of the providers listed below.") %>
@@ -56,11 +55,11 @@
 </form>
 <script>
     function loginCorreo() {
-      var x = document.getElementById("Login_Normal");
-      if (x.style.visibility === "hidden") {
-        x.style.visibility = "visible";
-      } else {
-        x.style.visibility = "hidden";
-      }
+        var x = document.getElementById("Login_Normal");
+        if (x.style.visibility === "hidden") {
+            x.style.visibility = "visible";
+        } else {
+            x.style.visibility = "hidden";
+        }
     }
 </script>
