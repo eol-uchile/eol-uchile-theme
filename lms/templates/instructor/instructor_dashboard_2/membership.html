@@ -138,7 +138,7 @@ from django.urls import reverse
         return true;
     };  
   </script>
-% if section_data['access']['instructor_staff'] and (section_data['access']['instructor'] or section_data['access']['staff'] or section_data['access']['admin']):
+% if section_data['access']['uchile_instructor_staff'] and (section_data['access']['instructor'] or section_data['access']['staff'] or section_data['access']['admin']):
 <fieldset class="batch-enrollment-run membership-run-section">
   <legend id="heading-batch-enrollment" class="hd hd-3">${_("Batch Enrollment")}</legend>
   <input type="hidden" id="csrf" name="csrfmiddlewaretoken" value="${csrf_token}"/>
