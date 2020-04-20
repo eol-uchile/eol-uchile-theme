@@ -34,7 +34,7 @@ from django.urls import reverse
         var csrf = document.getElementById("csrf");//value
         var role = document.getElementById("role-run"); //value
         var course_id = document.getElementById("course_id"); //value
-        var auto = document.getElementById("auto-enroll-run"); //checked
+        var auto = true; //auto-enroll
         var task_response = document.getElementById("enroll-run-response");
         var request_response_error = document.getElementById("enroll-run-response-error");
         
@@ -52,7 +52,7 @@ from django.urls import reverse
             runs: runs.value,
             modes: role.value,
             course: course_id.value,
-            enroll: auto.checked,                    
+            enroll: auto,                    
         };
         return $.ajax({
             dataType: 'json',
@@ -85,54 +85,45 @@ from django.urls import reverse
     };
     validate_error = function(data) {
         var aux_error = "";
-        if ("run_malos" in data){
+        if ("run_malos" in data){          
           aux_error = aux_error + "Estos Runs están incorrectos: " + data.run_malos + "</br>";
         }
         if ("no_run" in data){
           aux_error = aux_error + "Falta agregar run.</br>";
         }
         if ("curso2" in data){
-          aux_error = aux_error + "Error con la id del curso</br>";
+          aux_error = aux_error + "Error con la id del curso, actualice la página</br>";
         }
         if ("error_curso" in data){
-          aux_error = aux_error + "Curso no existe.</br>";
+          aux_error = aux_error + "Curso no existe, actualice la página</br>";
         }
         if ("error_mode" in data){
-          aux_error = aux_error + "El modo esta incorrecto.</br>";
+          aux_error = aux_error + "El rol del usuario esta incorrecto, actualice la página</br>";
         }
         if ("error_action" in data){
-          aux_error = aux_error + "La acción es incorrecta.</br>";
+          aux_error = aux_error + "La acción que quiere realizar es incorrecta, actualice la página</br>";
         }
+        if (aux_error != ""){
+          aux_error = "<b>No se ha inscrito/desinscrito ningún run por los siguentes motivos: </b></br>" + aux_error;
+          aux_error = aux_error + "<span style='color:darkorange'><b>Las cuentas pasaportes deben tener una 'P' al inicio y debe tener entre 5 y 20 caracteres</b></span></br>";
+        }        
         return aux_error
     };
     validate_success = function(data) {
         var aux_success = "";
         if ("saved" in data && data.saved == "saved"){          
           if (data.run_saved['run_saved_pending'] != ""){
-            aux_success = aux_success + "Runs no registrados (Pendientes): " + data.run_saved['run_saved_pending'] + "</br>";
+            aux_success = aux_success + "Estos runs no se han registrado a la plataforma: " + data.run_saved['run_saved_pending'] + "</br>";
+            aux_success = aux_success + "Al momento de registrarse, automaticamente se inscribirán en el curso.</br>";
           }
           if (data.run_saved['run_saved_enroll'] != ""){
-            aux_success = aux_success + "Runs Inscritos con Auto Enroll: " + data.run_saved['run_saved_enroll'] + "</br>";
-          }              
-          if (data.run_saved['run_saved_enroll_no_auto'] != ""){
-            aux_success = aux_success + "Runs Inscritos sin Auto Enroll: " + data.run_saved['run_saved_enroll_no_auto'] + "</br>";
+            aux_success = aux_success + "<b>Runs Inscritos Correctamente: </b>" + data.run_saved['run_saved_enroll'] + "</br>";
           }
           clear_input();
         }
         if ("saved" in data && data.saved == "unenroll"){          
-          if (data.run_unenroll['run_unenroll_pending'] != ""){
-            aux_success = aux_success + "Desincrito Runs no registrados (Pendientes): " + data.run_unenroll['run_unenroll_pending'] + "</br>";
-          }
-          if (data.run_unenroll['run_unenroll_enroll'] != ""){
-            aux_success = aux_success + "Desincrito Runs Inscritos con Auto Enroll: " + data.run_unenroll['run_unenroll_enroll'] + "</br>";
-          }              
-          if (data.run_unenroll['run_unenroll_enroll_allowed'] != ""){
-            aux_success = aux_success + "Desincrito Runs Inscritos sin Auto Enroll: " + data.run_unenroll['run_unenroll_enroll_allowed'] + "</br>";
-          }
-          if (data.run_unenroll['run_no_exists'] != ""){
-            aux_success = aux_success + "Runs no existen en ninguna base de datos: " + data.run_unenroll['run_no_exists'] + "</br>";
-          }
-          clear_input();
+          aux_success = aux_success + "<b>Runs Desinscrito Correctamente</b></br>";          
+          clear_input();          
         }
         return aux_success
     };
@@ -153,7 +144,8 @@ from django.urls import reverse
   <input type="hidden" id="csrf" name="csrfmiddlewaretoken" value="${csrf_token}"/>
   <input id="course_id" type="text" value="${sections[0]['course_id']}" hidden disabled>
   <label>
-     Ingresa los Runs de los usuarios por nuevas lineas(Enter).
+     Ingresa los Runs de los usuarios por nuevas lineas(Enter).</br>
+     Si es pasaporte debe agregar una P al inicio ("P123456789")
     <textarea rows="6" name="student-run" id="student-run" placeholder="12345678-k&#10;12345678-k" spellcheck="false"></textarea>
   </label>  
   <div class="role">
@@ -165,21 +157,6 @@ from django.urls import reverse
           </select>
       </label>
   </div>
-  <div class="enroll-option">
-      <label class="has-hint">
-          <input type="checkbox" name="auto-enroll-run" id="auto-enroll-run" value="Auto-Enroll" checked="yes" aria-describedby="heading-batch-enrollment-run">
-          <span class="label-text">${_("Auto Enroll")}</span>
-          <div class="hint auto-enroll-hint">
-              <span class="hint-caret"></span>
-              <p id="auto-enroll-tip">
-                  ${Text(_("If this option is {em_start}checked{em_end}, users who have not yet registered for {platform_name} will be automatically enrolled.")).format(em_start=HTML('<em>'), em_end=HTML('</em>'), platform_name=settings.PLATFORM_NAME)}
-                  ${Text(_("If this option is left {em_start}unchecked{em_end}, users who have not yet registered for {platform_name} will not be enrolled, but will be allowed to enroll once they make an account.")).format(em_start=HTML('<em>'), em_end=HTML('</em>'), platform_name=settings.PLATFORM_NAME)}
-                  <br /><br />
-                  ${_("Checking this box has no effect if 'Unenroll' is selected.")}
-              </p>
-          </div>
-      </label>
-  </div>  
   <div>
       <input onclick="return enrollrun(this)" type="button" name="enrollment-run-button" class="enrollment-run-button" value="${pgettext('someone','Enroll')}" data-endpoint="${ reverse('uchileedxlogin-login:staff') }" data-action="enroll">
       <input onclick="return enrollrun(this)" type="button" name="enrollment-run-button" class="enrollment-run-button" value="${_("Unenroll")}" data-endpoint="${ reverse('uchileedxlogin-login:staff') }" data-action="unenroll">
@@ -192,7 +169,6 @@ from django.urls import reverse
 <fieldset class="batch-enrollment membership-section">
     <legend id="heading-batch-enrollment" class="hd hd-3">${_("Batch Enrollment")}</legend>
     <label>
-      hola
         ${_("Enter email addresses and/or usernames separated by new lines or commas.")}
         ${_("You will not get notification for emails that bounce, so please double-check spelling.")}
         <textarea rows="6" name="student-ids" placeholder="${_("Email Addresses/Usernames")}" spellcheck="false"></textarea>
