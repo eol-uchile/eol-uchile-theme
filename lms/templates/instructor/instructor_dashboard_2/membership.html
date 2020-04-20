@@ -63,7 +63,7 @@ from django.urls import reverse
                 return display_response(data);
             },
             error: statusAjaxError(function() {
-                return alert("false");
+                return fail_with_error("Error inesperado ha ocurrido. Actualice la página e intente nuevamente");
             })
         });        
     }
