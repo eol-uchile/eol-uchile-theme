@@ -39,7 +39,7 @@ from django.urls import reverse
         var request_response_error = document.getElementById("enroll-run-response-error");
         
         if (!runs.value) {
-            fail_with_error('El campo de Run no pude dejarse vacío.');
+            fail_with_error('El campo de Rut no pude dejarse vacío.');
             return false;
         }
         if (!role.value) {
@@ -86,10 +86,10 @@ from django.urls import reverse
     validate_error = function(data) {
         var aux_error = "";
         if ("run_malos" in data){          
-          aux_error = aux_error + "Estos Runs están incorrectos: " + data.run_malos + "</br>";
+          aux_error = aux_error + "Estos Ruts están incorrectos: " + data.run_malos + "</br>";
         }
         if ("no_run" in data){
-          aux_error = aux_error + "Falta agregar run.</br>";
+          aux_error = aux_error + "Falta agregar rut.</br>";
         }
         if ("curso2" in data){
           aux_error = aux_error + "Error con la id del curso, actualice la página</br>";
@@ -104,7 +104,7 @@ from django.urls import reverse
           aux_error = aux_error + "La acción que quiere realizar es incorrecta, actualice la página</br>";
         }
         if (aux_error != ""){
-          aux_error = "<b>No se ha inscrito/desinscrito ningún run por los siguentes motivos: </b></br>" + aux_error;
+          aux_error = "<b>No se ha inscrito/desinscrito ningún rut por los siguentes motivos: </b></br>" + aux_error;
           aux_error = aux_error + "<span style='color:darkorange'><b>Las cuentas pasaportes deben tener una 'P' al inicio y debe tener entre 5 y 20 caracteres</b></span></br>";
         }        
         return aux_error
@@ -113,16 +113,16 @@ from django.urls import reverse
         var aux_success = "";
         if ("saved" in data && data.saved == "saved"){          
           if (data.run_saved['run_saved_pending'] != ""){
-            aux_success = aux_success + "Estos runs no se han registrado a la plataforma: " + data.run_saved['run_saved_pending'] + "</br>";
+            aux_success = aux_success + "No se ha encontrado ninguna cuenta institucional de los siguientes ruts: " + data.run_saved['run_saved_pending'] + "</br>";
             aux_success = aux_success + "Al momento de registrarse, automaticamente se inscribirán en el curso.</br>";
           }
           if (data.run_saved['run_saved_enroll'] != ""){
-            aux_success = aux_success + "<b>Runs Inscritos Correctamente: </b>" + data.run_saved['run_saved_enroll'] + "</br>";
+            aux_success = aux_success + "<b>Ruts inscritos correctamente: </b>" + data.run_saved['run_saved_enroll'] + "</br>";
           }
           clear_input();
         }
         if ("saved" in data && data.saved == "unenroll"){          
-          aux_success = aux_success + "<b>Runs Desinscrito Correctamente</b></br>";          
+          aux_success = aux_success + "<b>Ruts desinscrito correctamente</b></br>";          
           clear_input();          
         }
         return aux_success
@@ -140,12 +140,12 @@ from django.urls import reverse
   </script>
 % if request.user.has_perm('uchileedxlogin.uchile_instructor_staff') and (section_data['access']['instructor'] or section_data['access']['staff'] or section_data['access']['admin']):
 <fieldset class="batch-enrollment-run membership-run-section">
-  <legend id="heading-batch-enrollment" class="hd hd-3">${_("Batch Enrollment")}</legend>
+  <legend id="heading-batch-enrollment" class="hd hd-3">Inscripciones por Cuenta UChile</legend>
   <input type="hidden" id="csrf" name="csrfmiddlewaretoken" value="${csrf_token}"/>
   <input id="course_id" type="text" value="${sections[0]['course_id']}" hidden disabled>
   <label>
-     Ingresa los Runs de los usuarios por nuevas lineas(Enter).</br>
-     Si es pasaporte debe agregar una P al inicio ("P123456789")
+    Ingrese el RUT o Pasaporte de lo usuarios que desea inscribir. Si es más de uno, utilice saltos de lineas para diferenciar cada usuario.</br>
+    Considere que los Pasaportes deben contener una 'P' al inicio (ejemplo: "PA123456")
     <textarea rows="6" name="student-run" id="student-run" placeholder="12345678-k&#10;12345678-k" spellcheck="false"></textarea>
   </label>
   <div class="role">
