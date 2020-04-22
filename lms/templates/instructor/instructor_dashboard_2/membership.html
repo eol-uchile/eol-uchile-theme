@@ -28,7 +28,16 @@ from django.urls import reverse
     color: #36abc7;
 }
 </style>
-<script type="text/javascript">  
+<script type="text/javascript"> 
+    function limitTextarea(textarea, maxLines) {      
+        var lines = textarea.value.replace(/\r/g, '').trim();
+        lines = lines.split('\n');
+        lines = lines.filter(function(el) { return el; });              
+        if (maxLines && lines.length > maxLines) {
+            lines = lines.slice(0, maxLines);
+            textarea.value = lines.join('\n')
+        }
+    }
     function enrollrun(e){      
         var runs = document.getElementById("student-run");//value
         var csrf = document.getElementById("csrf");//value
@@ -145,8 +154,9 @@ from django.urls import reverse
   <input id="course_id" type="text" value="${sections[0]['course_id']}" hidden disabled>
   <label>
     Ingrese el RUT o Pasaporte de lo usuarios que desea inscribir. Si es más de uno, utilice saltos de lineas para diferenciar cada usuario.</br>
-    Considere que los Pasaportes deben contener una 'P' al inicio (ejemplo: "PA123456")
-    <textarea rows="6" name="student-run" id="student-run" placeholder="12345678-k&#10;12345678-k" spellcheck="false"></textarea>
+    Considere que los Pasaportes deben contener una 'P' al inicio (ejemplo: "PA123456")</br>
+    <b>Máximo 50 rut.</b></br>
+    <textarea rows="6" name="student-run" id="student-run" placeholder="12345678-k&#10;12345678-k" spellcheck="false" onkeyup="limitTextarea(this,50)"></textarea>
   </label>
   <div class="role">
       <label>
