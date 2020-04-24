@@ -123,8 +123,8 @@ from django.urls import reverse
             aux_success = aux_success + "No se ha encontrado ninguna cuenta institucional de los siguientes ruts: " + data.run_saved['run_saved_pending'] + "</br>";
             aux_success = aux_success + "Al momento de registrarse, automaticamente se inscribirán en el curso.</br>";
           }
-          if (data.run_saved['run_saved_enroll'] != ""){
-            aux_success = aux_success + "<b>Ruts inscritos correctamente: </b>" + data.run_saved['run_saved_enroll'] + "</br>";
+          if (data.run_saved['run_saved_enroll'] != "" || data.run_saved['run_saved_force'] != ""){
+            aux_success = aux_success + "<b>Ruts inscritos correctamente: </b>" + data.run_saved['run_saved_enroll'] + " - "  + data.run_saved['run_saved_force'] + "</br>";
           }
           clear_input();
         }
