@@ -61,7 +61,8 @@ from django.urls import reverse
             runs: runs.value,
             modes: role.value,
             course: course_id.value,
-            enroll: auto,                    
+            enroll: auto,
+            force: true
         };
         return $.ajax({
             dataType: 'json',
@@ -100,11 +101,8 @@ from django.urls import reverse
         if ("no_run" in data){
           aux_error = aux_error + "Falta agregar rut.</br>";
         }
-        if ("curso2" in data){
-          aux_error = aux_error + "Error con la id del curso, actualice la página</br>";
-        }
-        if ("error_curso" in data){
-          aux_error = aux_error + "Curso no existe, actualice la página</br>";
+        if ("curso2" in data || "error_curso" in data){
+          aux_error = aux_error + "El id del curso no corresponde a un curso existente, actualice la página e intentelo nuevamente</br>";
         }
         if ("error_mode" in data){
           aux_error = aux_error + "El rol del usuario esta incorrecto, actualice la página</br>";
@@ -125,8 +123,8 @@ from django.urls import reverse
             aux_success = aux_success + "No se ha encontrado ninguna cuenta institucional de los siguientes ruts: " + data.run_saved['run_saved_pending'] + "</br>";
             aux_success = aux_success + "Al momento de registrarse, automaticamente se inscribirán en el curso.</br>";
           }
-          if (data.run_saved['run_saved_enroll'] != ""){
-            aux_success = aux_success + "<b>Ruts inscritos correctamente: </b>" + data.run_saved['run_saved_enroll'] + "</br>";
+          if (data.run_saved['run_saved_enroll'] != "" || data.run_saved['run_saved_force'] != ""){
+            aux_success = aux_success + "<b>Ruts inscritos correctamente: </b>" + data.run_saved['run_saved_enroll'] + " - "  + data.run_saved['run_saved_force'] + "</br>";
           }
           clear_input();
         }
