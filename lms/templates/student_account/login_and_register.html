@@ -59,7 +59,7 @@
 </style>
     <main id="main" aria-label="Content" tabindex="-1">
         
-    <label hidden id="url_next">${ reverse('uchileedxlogin-login:login')}?${urlencode({'next':login_redirect_url})}</label>
+    <div style="visibility: hidden;" id="url_next">${ reverse('uchileedxlogin-login:login')}?${urlencode({'next':login_redirect_url})}</div>
         <div id="content-container" class="login-register-content">
             % if enable_enterprise_sidebar:
                 <%include file="enterprise_sidebar.html" />

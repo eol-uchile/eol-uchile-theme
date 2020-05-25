@@ -26,7 +26,7 @@
 <% } %>
 
 <form id="login" class="login-form" tabindex="-1" method="POST">
-    <a id="redirect_to" href="">
+    <a id="redirect_to" href="/">
         <div class="login-button2"></div>
     </a>
     
@@ -66,5 +66,6 @@
         var url = document.getElementById("url_next").textContent;
         var atag = document.getElementById("redirect_to");
         atag.setAttribute('href', url)
+        document.getElementById("url_next").style.display = "none";
     });
 </script>
