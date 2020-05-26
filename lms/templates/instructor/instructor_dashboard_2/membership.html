@@ -118,19 +118,29 @@ from django.urls import reverse
     };
     validate_success = function(data) {
         var aux_success = "";
+        
         if ("saved" in data && data.saved == "saved"){          
           if (data.run_saved['run_saved_pending'] != ""){
             aux_success = aux_success + "No se ha encontrado ninguna cuenta institucional de los siguientes ruts: " + data.run_saved['run_saved_pending'] + "</br>";
             aux_success = aux_success + "Al momento de registrarse, automaticamente se inscribirán en el curso.</br>";
           }
           if (data.run_saved['run_saved_enroll'] != "" || data.run_saved['run_saved_force'] != ""){
-            aux_success = aux_success + "<b>Ruts inscritos correctamente: </b>" + data.run_saved['run_saved_enroll'] + " - "  + data.run_saved['run_saved_force'] + "</br>";
+            var run_saved_enroll = data.run_saved['run_saved_enroll'].split("/")
+            var run_saved_force = data.run_saved['run_saved_force'].split("/")
+
+            aux_success = aux_success + "<b>Usuarios inscritos correctamente: </b></br>";
+            run_saved_enroll.forEach(run => {
+              aux_success = aux_success + run + "</br>";
+            });
+            run_saved_force.forEach(run => {
+              aux_success = aux_success + run + "</br>";
+            });
           }
           clear_input();
         }
-        if ("saved" in data && data.saved == "unenroll"){          
-          aux_success = aux_success + "<b>Ruts desinscrito correctamente</b></br>";          
-          clear_input();          
+        if ("saved" in data && data.saved == "unenroll"){
+          aux_success = aux_success + "<b>Ruts desinscrito correctamente</b></br>";
+          clear_input();
         }
         return aux_success
     };
@@ -159,9 +169,9 @@ from django.urls import reverse
   <div class="role">
       <label>
           ${_("Role of the users being enrolled.")}
-          <select id="role-run" name="role-run">              
+          <select id="role-run" name="role-run">
               <option value="honor" selected>Estudiante</option>
-              <option value="audit">Equipo Docente</option>        
+              <option value="audit">Equipo Docente</option>
           </select>
       </label>
   </div>
